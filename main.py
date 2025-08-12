@@ -44,7 +44,7 @@ def create_user():
 
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (name, email))  # Sesuaikan jika tabel user dipisah
+    cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (name, email))
     conn.commit()
     user_id = cursor.lastrowid
     cursor.close()
