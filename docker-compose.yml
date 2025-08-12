@@ -1,0 +1,46 @@
+services:
+  python:
+    image: python:3.11
+    container_name: latihan_app
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "5000:5000"
+    command: >
+      sh -c "python -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && python main.py"
+    networks:
+      - gemafajar
+  
+  db:
+    image: mysql:8.0
+    container_name: latihan_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: latihan
+      MYSQL_USER: latihan
+      MYSQL_PASSWORD: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - gemafajar
+
+  adminer:
+    image: adminer
+    container_name: adminerpy
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - gemafajar
+
+volumes:
+  dbdata:
+
+networks:
+  gemafajar:
+    driver: bridge
